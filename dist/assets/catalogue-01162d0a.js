@@ -1,0 +1,1 @@
+import{d as e,o as _,c as a,_ as t}from"./index-a5534667.js";const o=e({__name:"catalogue",setup(c){return(n,s)=>(_(),a("div",null,"功能目录"))}});const p=t(o,[["__scopeId","data-v-66e0ab20"]]);export{p as default};

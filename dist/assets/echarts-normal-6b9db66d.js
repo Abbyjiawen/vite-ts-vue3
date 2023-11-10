@@ -1,0 +1,1 @@
+import{_ as e,o as c,c as _}from"./index-a5534667.js";const t={};function a(o,r){return c(),_("div",null,"echarts-normal")}const n=e(t,[["render",a],["__scopeId","data-v-3ee17bce"]]);export{n as default};
