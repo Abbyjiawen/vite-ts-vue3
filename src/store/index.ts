@@ -1,15 +1,9 @@
-// store/index.ts
-import { createStore } from 'vuex'
+import type { App } from "vue";
+import { createPinia } from "pinia";
+const store = createPinia();
 
-interface State {
-  userName: string,
-  [k:string]: boolean | number | string | object | any[]
+export function setupStore(app: App<Element>) {
+  app.use(store);
 }
-export default createStore({
-  state(): State {
-    return {
-      userName: "Vuex",
-      hello: ''
-    };
-  },
-})
+
+export { store };

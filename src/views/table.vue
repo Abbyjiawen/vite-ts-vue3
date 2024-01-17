@@ -11,22 +11,29 @@
 
 <script lang="tsx" setup>
 import { ref, unref } from 'vue'
-import { TableV2SortOrder} from 'element-plus'
-// import {} from 'element-plus'
-// import type{ FunctionalComponent } from 'vue'
-import type { SortBy, SortState, CheckboxValueType, Column } from 'element-plus'
-
-// import { ref, unref } from 'vue'
-import { ElCheckbox } from 'element-plus'
-
+import { TableV2SortOrder, ElCheckbox, ElInput} from 'element-plus'
+import type { SortBy, SortState, CheckboxValueType, Column, InputInstance } from 'element-plus'
 import type { FunctionalComponent } from 'vue'
-// import type { CheckboxValueType, Column } from 'element-plus'
+// import store from '@/store';
+import { onMounted } from 'vue';
 
+onMounted(() => {
+  // store.commit("navFn", '2-2')
+  // console.log(store.state.tabNumber);
+})
 type SelectionCellProps = {
   value: boolean
   intermediate?: boolean
   onChange: (value: CheckboxValueType) => void
 }
+
+type InputCellProps = {
+  value: string
+  intermediate?: boolean
+  onChange: (value: string) => void
+  forwardRef: (el: InputInstance) => void
+}
+
 
 const SelectionCell: FunctionalComponent<SelectionCellProps> = ({
   value,
@@ -42,7 +49,18 @@ const SelectionCell: FunctionalComponent<SelectionCellProps> = ({
   )
 }
 
-const generateColumns = (length = 10, prefix = 'column-', props?: any) =>
+const InputCell: FunctionalComponent<InputCellProps> = ({
+  value,
+  onChange,
+  forwardRef,
+}) => {
+  return (
+    <ElInput ref={forwardRef as any} onInput={onChange} modelValue={value} />
+  )
+}
+
+
+const generateColumns = (length = 5, prefix = 'column-', props?: any) =>
   Array.from({ length }).map((_, columnIndex) => ({
     ...props,
     key: `${prefix}${columnIndex}`,
@@ -50,10 +68,11 @@ const generateColumns = (length = 10, prefix = 'column-', props?: any) =>
     title: `Column ${columnIndex}`,
     width: 150,
   }))
+  const columns: Column<any>[] = generateColumns(5)
 
 const generateData = (
   columns: ReturnType<typeof generateColumns>,
-  length = 200,
+  length =50,
   prefix = 'row-'
 ) =>
   Array.from({ length }).map((_, rowIndex) => {
@@ -65,12 +84,48 @@ const generateData = (
       {
         id: `${prefix}${rowIndex}`,
         checked: false,
+        editing : false,
         parentId: null,
       }
     )
   })
 
-const columns: Column<any>[] = generateColumns(5)
+  columns[1] = {
+  ...columns[1],
+  title: 'Editable Column',
+  cellRenderer: ({ rowData, column }) => {
+    const onChange = (value: string) => {
+      rowData[column.dataKey!] = value
+    }
+    const onEnterEditMode = () => {
+      rowData.editing = true
+    }
+
+    const onExitEditMode = () => (rowData.editing = false)
+    const input = ref()
+    const setRef = (el) => {
+      input.value = el
+      if (el) {
+        el.focus?.()
+      }
+    }
+
+    return rowData.editing ? (
+      <InputCell
+        forwardRef={setRef}
+        value={rowData[column.dataKey!]}
+        onChange={onChange}
+        onBlur={onExitEditMode}
+        onKeydownEnter={onExitEditMode}
+      />
+    ) : (
+      <div class="table-v2-inline-editing-trigger" onClick={onEnterEditMode}>
+        {rowData[column.dataKey!]}
+      </div>
+    )
+  },
+}
+
 columns.unshift({
   key: 'selection',
   width: 50,
@@ -132,7 +187,7 @@ columns.unshift({
 
 // const columns = generateColumns(5)
 const data = ref(generateData(columns, 50))
-console.log(data.value);
+// console.log(data.value);
 
 columns[0].sortable = true
 columns[1].sortable = true

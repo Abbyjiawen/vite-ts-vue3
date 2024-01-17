@@ -3,8 +3,12 @@
 </template>
 
 <script setup lang="ts">
-  // this.$store.commit("tabIndex", 2)
-  // console.log(this.$store)
+// import {store} from '@/store';
+import { onMounted } from 'vue';
+onMounted(() => {
+  // store.commit("navFn", '1-2')
+  // console.log(store.state.tabNumber);
+})
 </script>
 
 <style lang="less" scoped>

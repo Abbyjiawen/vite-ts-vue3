@@ -1,13 +1,6 @@
 <template>
-  <el-form
-    ref="ruleFormRef"
-    :model="ruleForm"
-    :rules="rules"
-    label-width="120px"
-    class="demo-ruleForm"
-    :size="formSize"
-    status-icon
-  >
+  <el-form ref="ruleFormRef" :model="ruleForm" :rules="rules" label-width="120px" class="demo-ruleForm" :size="formSize"
+    status-icon>
     <el-form-item label="Activity name" prop="name">
       <el-input v-model="ruleForm.name" />
     </el-form-item>
@@ -18,22 +11,13 @@
       </el-select>
     </el-form-item>
     <el-form-item label="Activity count" prop="count">
-      <el-select-v2
-        v-model="ruleForm.count"
-        placeholder="Activity count"
-        :options="options"
-      />
+      <el-select-v2 v-model="ruleForm.count" placeholder="Activity count" :options="options" />
     </el-form-item>
     <el-form-item label="Activity time" required>
       <el-col :span="11">
         <el-form-item prop="date1">
-          <el-date-picker
-            v-model="ruleForm.date1"
-            type="date"
-            label="Pick a date"
-            placeholder="Pick a date"
-            style="width: 100%"
-          />
+          <el-date-picker v-model="ruleForm.date1" type="date" label="Pick a date" placeholder="Pick a date"
+            style="width: 100%" />
         </el-form-item>
       </el-col>
       <el-col class="text-center" :span="2">
@@ -41,12 +25,7 @@
       </el-col>
       <el-col :span="11">
         <el-form-item prop="date2">
-          <el-time-picker
-            v-model="ruleForm.date2"
-            label="Pick a time"
-            placeholder="Pick a time"
-            style="width: 100%"
-          />
+          <el-time-picker v-model="ruleForm.date2" label="Pick a time" placeholder="Pick a time" style="width: 100%" />
         </el-form-item>
       </el-col>
     </el-form-item>
@@ -81,7 +60,12 @@
 <script lang="ts" setup>
 import { reactive, ref } from "vue";
 import type { FormInstance, FormRules } from "element-plus";
-
+// import store from '@/store';
+import { onMounted } from 'vue';
+onMounted(() => {
+  // store.commit("navFn", '2-1')
+  // console.log(store.state.tabNumber);
+})
 interface RuleForm {
   name: string;
   region: string;
