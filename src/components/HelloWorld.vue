@@ -67,6 +67,13 @@ const navbarArr = reactive([
     path: "/user",
   },
 ]);
+
+function handleOpen(){
+
+}
+function handleClose(){
+
+}
 </script>
 
 <template>
